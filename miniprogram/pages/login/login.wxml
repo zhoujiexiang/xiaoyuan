@@ -1,0 +1,46 @@
+<view class="page">
+
+  <view class="logo-wrap">
+    <view class="logo">🛒</view>
+    <text class="app-name">校园二手</text>
+    <text class="app-slogan">让闲置在校园里流动起来</text>
+  </view>
+
+  <view class="school-box">
+    <text class="sb-label">当前学校</text>
+    <text class="sb-value">{{school}}</text>
+  </view>
+
+  <view class="login-actions">
+    <!-- 直接登录，不再申请头像昵称——
+         wx.getUserProfile 自 2022-10-25 起只返回匿名数据，
+         头像昵称改由「编辑资料」页的 chooseAvatar + nickname 填写 -->
+    <button
+      class="btn btn-primary btn-block login-btn"
+      bindtap="onLogin"
+      loading="{{logging}}"
+      disabled="{{logging}}"
+    >微信一键登录</button>
+
+    <view class="skip" bindtap="onSkip">先随便逛逛</view>
+  </view>
+
+  <view class="agree" bindtap="toggleAgree">
+    <view class="checkbox {{agreed ? 'checked' : ''}}">
+      <text wx:if="{{agreed}}">✓</text>
+    </view>
+    <!-- ⚠️ 整段必须同一行：<text> 会把内容里的换行渲染成换行符，
+         否则「我已阅读并同意」与《用户协议》会被拆成两行、上方还多一个空行。 -->
+    <text class="agree-text">我已阅读并同意<text class="agree-link" catchtap="showAgreement">《用户协议》</text></text>
+  </view>
+
+  <view class="tips">
+    <text class="tips-title">登录后你可以</text>
+    <view class="tips-list">
+      <view class="tip-item"><text class="tip-dot"></text><text>发布闲置物品，同校快速成交</text></view>
+      <view class="tip-item"><text class="tip-dot"></text><text>收藏心仪商品，随时查看降价</text></view>
+      <view class="tip-item"><text class="tip-dot"></text><text>与卖家实时聊天，约面交</text></view>
+    </view>
+  </view>
+
+</view>

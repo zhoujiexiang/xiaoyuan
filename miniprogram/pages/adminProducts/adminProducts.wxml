@@ -1,0 +1,66 @@
+<view class="page">
+
+  <view class="search-bar">
+    <input
+      class="search-input"
+      value="{{keyword}}"
+      placeholder="搜索商品标题"
+      placeholder-class="form-placeholder"
+      confirm-type="search"
+      bindinput="onKeywordInput"
+    />
+  </view>
+
+  <view class="tabs">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="key"
+      class="tab {{activeTab === item.key ? 'active' : ''}}"
+      data-key="{{item.key}}"
+      bindtap="onTabTap"
+    >
+      <text>{{item.label}}</text>
+      <view wx:if="{{activeTab === item.key}}" class="tab-line"></view>
+    </view>
+  </view>
+
+  <view wx:if="{{list.length > 0}}" class="list">
+    <view wx:for="{{list}}" wx:key="_id" class="item">
+
+      <view class="item-main" data-id="{{item._id}}" bindtap="goProduct">
+        <image class="img" src="{{item.cover}}" mode="aspectFill" />
+        <view class="body">
+          <text class="title ellipsis-2">{{item.title}}</text>
+          <view class="meta">
+            <text class="price">¥{{item.price}}</text>
+            <!-- ⚠️ 内容必须与标签同行：<text> 会把内容里的换行渲染成换行符，
+                 徽章里会多一个空行，文字被挤到下半格。 -->
+            <text class="tag {{item.status === 'on_sale' ? 'tag-green' : (item.status === 'blocked' ? 'tag-red' : 'tag-gray')}}">{{item.status === 'on_sale' ? '在售' : (item.status === 'sold' ? '已售' : (item.status === 'blocked' ? '已下架' : item.status))}}</text>
+          </view>
+          <text class="seller">{{item.sellerName}} · {{item.timeText}}</text>
+        </view>
+      </view>
+
+      <view class="actions">
+        <view
+          class="act-btn {{item.status === 'blocked' ? 'act-restore' : 'act-block'}}"
+          data-id="{{item._id}}"
+          data-status="{{item.status}}"
+          data-title="{{item.title}}"
+          bindtap="onToggle"
+        >{{item.status === 'blocked' ? '恢复商品' : '下架商品'}}</view>
+      </view>
+
+    </view>
+  </view>
+
+  <empty-state
+    wx:if="{{!loading && list.length === 0}}"
+    icon="📦"
+    text="没有符合条件的商品"
+  />
+
+  <view wx:if="{{loading}}" class="loading-more">加载中…</view>
+  <view wx:elif="{{!hasMore && list.length > 0}}" class="loading-more">— 没有更多了 —</view>
+
+</view>

@@ -1,0 +1,87 @@
+<view class="page">
+
+  <!-- 关联商品卡片 -->
+  <view wx:if="{{productTitle}}" class="product-bar" bindtap="goProduct">
+    <text class="pb-label">正在咨询</text>
+    <text class="pb-title ellipsis">{{productTitle}}</text>
+    <text class="pb-arrow">›</text>
+  </view>
+
+  <!-- 没有关联商品的纯私聊（从对方主页点进来的）：顶部显示对方是谁，点可看主页 -->
+  <view wx:elif="{{toId}}" class="peer-bar" bindtap="goPeerProfile">
+    <image class="peer-bar-avatar" src="{{toAvatar}}" mode="aspectFill" />
+    <view class="flex-1">
+      <text class="peer-bar-name ellipsis">{{toName}}</text>
+      <text class="peer-bar-sub">点这里查看 TA 的主页</text>
+    </view>
+    <text class="pb-arrow">›</text>
+  </view>
+
+  <!-- 消息列表 -->
+  <scroll-view
+    class="msg-scroll"
+    scroll-y
+    scroll-into-view="{{scrollIntoView}}"
+    scroll-with-animation
+  >
+    <view class="msg-list">
+      <view
+        wx:for="{{messages}}"
+        wx:key="_id"
+        id="msg-{{item._id}}"
+        class="msg-row {{item.mine ? 'mine' : 'peer'}} {{item.isNew ? 'msg-new' : ''}}"
+      >
+        <image
+          wx:if="{{!item.mine}}"
+          class="msg-avatar"
+          src="{{toAvatar}}"
+          mode="aspectFill"
+          bindtap="goPeerProfile"
+        />
+
+        <view class="bubble-wrap">
+          <view class="bubble {{item.mine ? 'bubble-mine' : 'bubble-peer'}}">
+            <text class="bubble-text" user-select>{{item.content}}</text>
+          </view>
+          <text class="msg-time">{{item.timeText}}</text>
+        </view>
+
+        <image
+          wx:if="{{item.mine}}"
+          class="msg-avatar"
+          src="{{myAvatar}}"
+          mode="aspectFill"
+        />
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 快捷短语 -->
+  <scroll-view wx:if="{{messages.length < 3}}" class="quick-scroll" scroll-x show-scrollbar="{{false}}">
+    <view class="quick-list">
+      <view class="quick-item" data-text="你好，这个还在吗？" bindtap="onQuickSend">这个还在吗？</view>
+      <view class="quick-item" data-text="可以便宜点吗？" bindtap="onQuickSend">可以便宜点吗？</view>
+      <view class="quick-item" data-text="什么时候方便面交？" bindtap="onQuickSend">什么时候面交？</view>
+      <view class="quick-item" data-text="好的，谢谢！" bindtap="onQuickSend">好的，谢谢！</view>
+    </view>
+  </scroll-view>
+
+  <!-- 输入栏 -->
+  <view class="input-bar">
+    <input
+      class="input"
+      value="{{inputValue}}"
+      placeholder="说点什么…"
+      placeholder-class="form-placeholder"
+      confirm-type="send"
+      adjust-position
+      bindinput="onInput"
+      bindconfirm="onSend"
+    />
+    <view
+      class="send-btn {{inputValue ? 'active' : ''}}"
+      bindtap="onSend"
+    >发送</view>
+  </view>
+
+</view>

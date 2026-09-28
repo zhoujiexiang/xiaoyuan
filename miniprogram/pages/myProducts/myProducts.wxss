@@ -1,0 +1,61 @@
+.page { padding-bottom: 40rpx; }
+
+.tabs {
+  display: flex;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24rpx 0;
+  font-size: 28rpx;
+  color: #666;
+  position: relative;
+}
+.tab.active { color: #07c160; font-weight: 600; }
+.tab-line {
+  position: absolute;
+  bottom: 8rpx;
+  width: 48rpx;
+  height: 6rpx;
+  border-radius: 3rpx;
+  background: #07c160;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx 24rpx 0;
+}
+
+.list-item { margin-bottom: 0; }
+
+/* 贴在卡片下方，视觉上连成一块；margin-top 抵消卡片自带的 20rpx 下边距 */
+.row-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: -20rpx 0 20rpx;
+  padding: 16rpx 24rpx;
+  background: #fff;
+  border-radius: 0 0 16rpx 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.ra-btn {
+  padding: 10rpx 30rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 999rpx;
+  font-size: 26rpx;
+  color: #666;
+  background: #fff;
+}
+.ra-btn-primary {
+  color: #07c160;
+  border-color: #07c160;
+}

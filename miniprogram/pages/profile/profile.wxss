@@ -1,0 +1,38 @@
+/* pages/profile/profile.wxss */
+.page { min-height: 100vh; }
+
+.avatar-btn {
+  width: 128rpx;
+  height: 128rpx;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 50%;
+  background: #f2f3f5;
+  overflow: hidden;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.avatar-btn::after { border: none; }
+
+.avatar-img { width: 128rpx; height: 128rpx; display: block; }
+
+.avatar-empty {
+  width: 128rpx;
+  height: 128rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ae-plus { color: #bbb; font-size: 52rpx; line-height: 1; }
+
+.avatar-hint { margin-left: 20rpx; color: #999; font-size: 24rpx; }
+
+.tip {
+  margin: 8rpx 24rpx 0;
+  color: #999;
+  font-size: 24rpx;
+  line-height: 1.6;
+}
+
+.actions { padding: 40rpx 24rpx; }

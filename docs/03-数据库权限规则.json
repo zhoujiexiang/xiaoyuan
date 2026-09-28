@@ -1,0 +1,39 @@
+{
+  "_说明": "云开发数据库安全规则。在 云开发控制台 → 数据库 → 集合 → 权限设置 → 自定义安全规则 中逐条粘贴对应部分（不要粘整个文件）。",
+
+  "users": {
+    "read": "doc._openid == auth.openid",
+    "write": false
+  },
+
+  "products": {
+    "read": true,
+    "write": "doc._openid == auth.openid"
+  },
+
+  "orders": {
+    "read": "doc.buyerOpenid == auth.openid || doc.sellerOpenid == auth.openid",
+    "write": false
+  },
+
+  "messages": {
+    "read": "doc.fromOpenid == auth.openid || doc.toOpenid == auth.openid",
+    "write": false
+  },
+
+  "favorites": {
+    "read": "doc._openid == auth.openid",
+    "write": "doc._openid == auth.openid"
+  },
+
+  "reports": {
+    "read": "doc._openid == auth.openid",
+    "write": false
+  },
+
+  "config": {
+    "_说明": "存放管理员名单（_id = 'admin'）。管理端云函数用服务端权限读写，客户端一律不可访问。",
+    "read": false,
+    "write": false
+  }
+}

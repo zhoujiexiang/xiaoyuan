@@ -1,0 +1,83 @@
+<view class="page">
+
+  <!-- 已认证 -->
+  <view wx:if="{{verifyStatus === 'passed'}}" class="result">
+    <view class="result-icon success">✓</view>
+    <text class="result-title">已完成校园认证</text>
+    <text class="result-sub">{{userInfo.realName}} · {{userInfo.studentNo}}</text>
+    <text class="result-sub">{{userInfo.schoolName}}</text>
+    <view class="btn btn-plain result-btn" bindtap="goBack">返回</view>
+  </view>
+
+  <!-- 审核中 -->
+  <view wx:elif="{{verifyStatus === 'pending'}}" class="result">
+    <view class="result-icon pending">⏳</view>
+    <text class="result-title">认证审核中</text>
+    <text class="result-sub">我们会在 1-2 个工作日内完成审核</text>
+    <text class="result-sub">审核通过后即可发布商品</text>
+    <view class="btn btn-plain result-btn" bindtap="goBack">返回</view>
+  </view>
+
+  <!-- 填写表单 -->
+  <block wx:else>
+
+    <view wx:if="{{verifyStatus === 'rejected'}}" class="reject-tip">
+      <text class="rt-icon">⚠️</text>
+      <view class="flex-1">
+        <text class="rt-title">上次认证未通过</text>
+        <text class="rt-reason">{{verifyReason || '信息填写不正确，请重新提交'}}</text>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="sec-title">填写认证信息</view>
+      <text class="sec-desc">为确保交易双方都是本校同学，发布商品前需完成校园认证</text>
+
+      <view class="form-item">
+        <text class="form-label">真实姓名</text>
+        <input
+          class="form-input"
+          value="{{realName}}"
+          data-field="realName"
+          placeholder="用于学生证核对"
+          placeholder-class="form-placeholder"
+          bindinput="onInput"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">学号</text>
+        <input
+          class="form-input"
+          value="{{studentNo}}"
+          data-field="studentNo"
+          placeholder="6-20 位数字或字母"
+          placeholder-class="form-placeholder"
+          bindinput="onInput"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">学校</text>
+        <view class="form-input readonly">{{school}}</view>
+      </view>
+    </view>
+
+    <view class="notice">
+      <text class="notice-title">认证说明</text>
+      <view class="notice-item">· 信息仅用于校内身份核实，不会对外展示</view>
+      <view class="notice-item">· 一个学号只能认证一个账号</view>
+      <view class="notice-item">· 认证免费，审核通过后长期有效</view>
+    </view>
+
+    <view class="submit-wrap">
+      <button
+        class="btn btn-primary btn-block"
+        disabled="{{submitting}}"
+        bindtap="onSubmit"
+      >{{submitting ? '提交中…' : '提交认证'}}</button>
+    </view>
+
+  </block>
+
+</view>

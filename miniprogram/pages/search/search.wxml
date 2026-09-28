@@ -1,0 +1,65 @@
+<view class="page">
+
+  <!-- 搜索输入 -->
+  <view class="sbar">
+    <view class="sbox">
+      <text class="sicon">🔍</text>
+      <input
+        class="sinput"
+        value="{{keyword}}"
+        placeholder="{{searchType === 'errand' ? '搜索跑腿任务' : '搜索你想要的闲置'}}"
+        placeholder-class="form-placeholder"
+        confirm-type="search"
+        focus
+        bindinput="onInput"
+        bindconfirm="onConfirm"
+      />
+      <text wx:if="{{keyword}}" class="sclear" bindtap="onInput" data-clear>✕</text>
+    </view>
+    <text class="scancel" bindtap="onConfirm">搜索</text>
+  </view>
+
+  <!-- 闲置 / 跑腿 切换：跑腿 tab 点进来时默认就是跑腿 -->
+  <view class="stype-row">
+    <view class="stype {{searchType === 'goods' ? 'stype-on' : ''}}" data-type="goods" bindtap="onTypeTap">闲置</view>
+    <view class="stype {{searchType === 'errand' ? 'stype-on' : ''}}" data-type="errand" bindtap="onTypeTap">跑腿</view>
+  </view>
+
+  <!-- 历史记录 -->
+  <view wx:if="{{!searched && history.length > 0}}" class="card">
+    <view class="row-between">
+      <text class="bold">搜索历史</text>
+      <text class="text-sm text-gray" bindtap="clearHistory">清空</text>
+    </view>
+    <view class="hlist">
+      <view
+        wx:for="{{history}}"
+        wx:key="*this"
+        class="hitem"
+        data-kw="{{item}}"
+        bindtap="onHistoryTap"
+      >{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 结果 -->
+  <view wx:if="{{list.length > 0}}" class="result-list">
+    <product-card
+      wx:for="{{list}}"
+      wx:key="_id"
+      class="pcard-cell"
+      item="{{item}}"
+      showSeller="{{false}}"
+      bind:cardtap="onCardTap"
+    />
+  </view>
+
+  <empty-state
+    wx:if="{{searched && !loading && list.length === 0}}"
+    icon="🔍"
+    text="{{searchType === 'errand' ? '没有找到相关跑腿任务，换个关键词试试' : '没有找到相关商品，换个关键词试试'}}"
+  />
+
+  <view wx:if="{{loading}}" class="loading-more">搜索中…</view>
+
+</view>

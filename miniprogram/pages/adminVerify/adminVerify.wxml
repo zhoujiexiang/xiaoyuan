@@ -1,0 +1,77 @@
+<view class="page">
+
+  <view class="tabs">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="key"
+      class="tab {{activeTab === item.key ? 'active' : ''}}"
+      data-key="{{item.key}}"
+      bindtap="onTabTap"
+    >
+      <text>{{item.label}}</text>
+      <view wx:if="{{activeTab === item.key}}" class="tab-line"></view>
+    </view>
+  </view>
+
+  <view wx:if="{{list.length > 0}}" class="list">
+    <view wx:for="{{list}}" wx:key="_id" class="item">
+
+      <view class="item-head">
+        <image class="avatar" src="{{item.avatarUrl}}" mode="aspectFill" />
+        <view class="flex-1">
+          <text class="nickname ellipsis">{{item.nickName}}</text>
+          <text class="time">{{item.timeText}}提交</text>
+        </view>
+      </view>
+
+      <view class="info">
+        <view class="info-row">
+          <text class="ir-label">真实姓名</text>
+          <text class="ir-value">{{item.realName || '—'}}</text>
+        </view>
+        <view class="info-row">
+          <text class="ir-label">学号</text>
+          <text
+            class="ir-value mono"
+            data-no="{{item.studentNo}}"
+            bindtap="copyStudentNo"
+          >{{item.studentNo || '—'}}</text>
+          <text class="copy-hint">点击复制</text>
+        </view>
+        <view class="info-row">
+          <text class="ir-label">学校</text>
+          <text class="ir-value">{{item.schoolName || '—'}}</text>
+        </view>
+      </view>
+
+      <view wx:if="{{activeTab === 'pending'}}" class="actions">
+        <view
+          class="act-btn act-reject"
+          data-id="{{item._id}}"
+          data-name="{{item.nickName}}"
+          bindtap="onReject"
+        >驳回</view>
+        <view
+          class="act-btn act-approve"
+          data-id="{{item._id}}"
+          data-name="{{item.nickName}}"
+          bindtap="onApprove"
+        >通过认证</view>
+      </view>
+
+      <view wx:else class="done-mark {{item.verifyStatus}}">
+        {{item.verifyStatus === 'passed' ? '✓ 已通过' : '✕ 已驳回'}}
+      </view>
+
+    </view>
+  </view>
+
+  <empty-state
+    wx:if="{{!loading && list.length === 0}}"
+    icon="{{activeTab === 'pending' ? '✅' : '📭'}}"
+    text="{{activeTab === 'pending' ? '没有待审核的申请' : '暂无记录'}}"
+  />
+
+  <view wx:if="{{loading}}" class="loading-more">加载中…</view>
+
+</view>

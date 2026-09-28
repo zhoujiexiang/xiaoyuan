@@ -1,0 +1,76 @@
+<view class="page">
+
+  <view class="tabs">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="key"
+      class="tab {{activeTab === item.key ? 'active' : ''}}"
+      data-key="{{item.key}}"
+      bindtap="onTabTap"
+    >
+      <text>{{item.label}}</text>
+      <view wx:if="{{activeTab === item.key}}" class="tab-line"></view>
+    </view>
+  </view>
+
+  <view wx:if="{{list.length > 0}}" class="list">
+    <view wx:for="{{list}}" wx:key="_id" class="item">
+
+      <view class="item-head">
+        <text class="reason">{{item.reason}}</text>
+        <text class="time">{{item.timeText}}</text>
+      </view>
+
+      <!-- 被举报商品 -->
+      <view
+        wx:if="{{item.target}}"
+        class="target"
+        data-id="{{item.target._id}}"
+        bindtap="goProduct"
+      >
+        <image class="t-img" src="{{item.target.cover}}" mode="aspectFill" />
+        <view class="t-body">
+          <text class="t-title ellipsis-2">{{item.target.title}}</text>
+          <view class="t-meta">
+            <text class="t-price">¥{{item.target.price}}</text>
+            <text class="tag tag-gray">{{item.target.status}}</text>
+          </view>
+          <text class="t-seller">卖家：{{item.target.sellerName}}</text>
+        </view>
+      </view>
+
+      <view wx:else class="target-missing">
+        <text>被举报对象不存在或已删除</text>
+      </view>
+
+      <view wx:if="{{item.detail}}" class="detail">
+        <text class="d-label">补充说明：</text>
+        <text class="d-text">{{item.detail}}</text>
+      </view>
+
+      <view wx:if="{{activeTab === 'pending' && item.target}}" class="actions">
+        <view
+          class="act-btn act-ignore"
+          data-id="{{item._id}}"
+          bindtap="onIgnore"
+        >忽略</view>
+        <view
+          class="act-btn act-block"
+          data-id="{{item._id}}"
+          data-title="{{item.target.title}}"
+          bindtap="onBlock"
+        >下架商品</view>
+      </view>
+
+    </view>
+  </view>
+
+  <empty-state
+    wx:if="{{!loading && list.length === 0}}"
+    icon="{{activeTab === 'pending' ? '✅' : '📭'}}"
+    text="{{activeTab === 'pending' ? '没有待处理的举报' : '暂无记录'}}"
+  />
+
+  <view wx:if="{{loading}}" class="loading-more">加载中…</view>
+
+</view>

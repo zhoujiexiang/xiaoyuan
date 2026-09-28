@@ -1,0 +1,72 @@
+.conv-list { background: #fff; }
+
+.conv {
+  display: flex;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+.conv-hover { background: #fafafa; }
+
+.conv-avatar-wrap { position: relative; flex-shrink: 0; }
+.conv-avatar {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  background: #eee;
+}
+.conv-badge {
+  position: absolute;
+  top: -8rpx;
+  right: -8rpx;
+  min-width: 36rpx;
+  height: 36rpx;
+  padding: 0 8rpx;
+  border-radius: 18rpx;
+  background: #fa5151;
+  color: #fff;
+  font-size: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.conv-body {
+  flex: 1;
+  min-width: 0;
+  margin-left: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.conv-name { font-size: 30rpx; font-weight: 500; max-width: 380rpx; }
+.conv-time { font-size: 22rpx; color: #bbb; flex-shrink: 0; }
+.conv-msg {
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+.conv-product {
+  display: flex;
+  align-items: center;
+  margin-top: 10rpx;
+  padding: 6rpx 12rpx;
+  background: #f5f6f8;
+  border-radius: 6rpx;
+  font-size: 22rpx;
+  color: #888;
+  align-self: flex-start;
+  max-width: 100%;
+}
+.conv-product-icon { margin-right: 6rpx; }
+
+.login-mask {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 240rpx 60rpx;
+}
+.lm-icon { font-size: 100rpx; opacity: 0.4; margin-bottom: 32rpx; }
+.lm-text { color: #999; font-size: 28rpx; margin-bottom: 60rpx; }
+.lm-btn { width: 400rpx; }

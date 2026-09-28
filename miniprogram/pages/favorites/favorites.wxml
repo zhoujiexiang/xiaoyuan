@@ -1,0 +1,26 @@
+<view class="page">
+
+  <view wx:if="{{list.length > 0}}" class="list">
+    <product-card
+      wx:for="{{list}}"
+      wx:key="_id"
+      class="pcard-cell"
+      item="{{item}}"
+      showSeller="{{false}}"
+      showStatus="{{true}}"
+      bind:cardtap="onCardTap"
+    />
+  </view>
+
+  <empty-state
+    wx:if="{{!loading && list.length === 0}}"
+    icon="⭐"
+    text="还没有收藏任何商品"
+    btnText="去逛逛"
+    bind:btntap="goHome"
+  />
+
+  <view wx:if="{{loading}}" class="loading-more">加载中…</view>
+  <view wx:elif="{{!hasMore && list.length > 0}}" class="loading-more">— 没有更多了 —</view>
+
+</view>

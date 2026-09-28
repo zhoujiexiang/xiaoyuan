@@ -1,0 +1,233 @@
+<view class="page" wx:if="{{!loading && product}}">
+
+  <!-- 图片轮播（跑腿经常没图，就不占位置了） -->
+  <swiper
+    wx:if="{{product.images.length > 0}}"
+    class="gallery"
+    indicator-dots="{{product.images.length > 1}}"
+    indicator-color="rgba(255,255,255,0.4)"
+    indicator-active-color="#ffffff"
+    circular
+  >
+    <swiper-item wx:for="{{product.images}}" wx:key="*this">
+      <image
+        class="gallery-img"
+        src="{{item}}"
+        mode="aspectFill"
+        data-index="{{index}}"
+        bindtap="previewImage"
+      />
+    </swiper-item>
+  </swiper>
+
+  <view wx:else class="gallery gallery-errand">
+    <text class="ge-icon">🛵</text>
+    <text class="ge-text">校园跑腿</text>
+  </view>
+
+  <!-- 状态条：跑腿看 errandStatus，闲置看 status -->
+  <view
+    wx:if="{{isErrand ? product.errandStatus !== 'open' : product.status !== 'on_sale'}}"
+    class="status-banner"
+  >
+    <text>{{statusText}}</text>
+  </view>
+
+  <!-- 价格与标题 -->
+  <view class="card">
+    <view class="row-between">
+      <view class="row">
+        <text wx:if="{{isErrand}}" class="reward-label">酬劳</text>
+        <text class="price price-symbol">¥</text>
+        <text class="price price-big">{{priceText}}</text>
+        <text wx:if="{{!isErrand && product.oriPrice}}" class="price-ori">¥{{product.oriPrice}}</text>
+      </view>
+      <text class="text-sm text-gray">{{product.viewCount}} 浏览 · {{product.favCount}} 收藏</text>
+    </view>
+
+    <view class="title">{{product.title}}</view>
+
+    <view class="meta">
+      <text class="tag tag-gray">{{isErrand ? product.errandTypeName : product.categoryName}}</text>
+      <text class="text-sm text-gray">{{timeText}}发布</text>
+    </view>
+  </view>
+
+  <!-- 跑腿任务信息 -->
+  <view wx:if="{{isErrand}}" class="card">
+    <view class="sec-title">任务信息</view>
+
+    <view class="errand-row">
+      <text class="errand-label">取件地</text>
+      <text class="errand-val">{{product.fromPlace}}</text>
+    </view>
+    <view class="errand-row">
+      <text class="errand-label">送达地</text>
+      <text class="errand-val">{{product.toPlace}}</text>
+    </view>
+    <view class="errand-row">
+      <text class="errand-label">完成时间</text>
+      <text class="errand-val">{{deadlineText}} 前</text>
+    </view>
+    <view class="errand-row">
+      <text class="errand-label">任务状态</text>
+      <text class="tag {{errandStatusClass}}">{{errandStatusText}}</text>
+    </view>
+
+    <view wx:if="{{product.runnerName}}" class="errand-row">
+      <text class="errand-label">接单同学</text>
+      <view class="errand-val row" bindtap="goRunnerProfile">
+        <image class="runner-avatar" src="{{product.runnerAvatar}}" mode="aspectFill" />
+        <text class="runner-name">{{product.runnerName}}</text>
+        <text class="seller-arrow">查看主页 ›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 描述 -->
+  <view class="card">
+    <view class="sec-title">{{isErrand ? '任务说明' : '商品描述'}}</view>
+    <text class="desc">{{product.desc}}</text>
+  </view>
+
+  <!-- 卖家 / 发布者信息 -->
+  <view class="card">
+    <view class="sec-title">{{isErrand ? '发布者' : '卖家信息'}}</view>
+    <!-- 整行可点 → 对方主页，在那里点「发消息」就能私聊 -->
+    <view class="seller" bindtap="goSellerProfile" hover-class="seller-hover">
+      <image class="seller-avatar" src="{{seller.avatarUrl}}" mode="aspectFill" />
+      <view class="flex-1">
+        <view class="row">
+          <text class="seller-name">{{seller.nickName}}</text>
+          <text
+            class="tag {{seller.verifyStatus === 'passed' ? 'tag-green' : 'tag-gray'}}"
+            style="margin-left: 12rpx;"
+          >{{verifyText}}</text>
+        </view>
+        <text class="text-sm text-gray">信用分 {{seller.creditScore}}</text>
+      </view>
+      <text class="seller-arrow">查看主页 ›</text>
+    </view>
+
+    <!-- 跑腿的「地点」在任务信息里已经写清楚了，这里只留联系方式 -->
+    <view wx:if="{{!isErrand}}" class="place-row">
+      <text class="place-icon">📍</text>
+      <text class="place-text">建议面交地点：{{product.tradePlace}}</text>
+    </view>
+
+    <view wx:if="{{product.contact}}" class="place-row">
+      <text class="place-icon">💬</text>
+      <text class="place-text">联系方式：{{product.contact}}</text>
+    </view>
+  </view>
+
+  <!-- 安全提示 -->
+  <view class="safe-tip">
+    <text class="safe-icon">🛡️</text>
+    <!-- ⚠️ 内容必须与标签同行：<text> 会把内容里的换行渲染成换行符，上方会多出一个空行 -->
+    <text>{{isErrand ? '接单前先聊清楚要求，贵重物品不要代垫大额费用' : '请在校内公共场所面交，验货后再付款，切勿提前转账'}}</text>
+  </view>
+
+  <view class="bottom-holder"></view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+
+    <!-- ===== 跑腿 ===== -->
+    <block wx:if="{{isErrand}}">
+      <!-- 我是发布者 -->
+      <block wx:if="{{isOwner}}">
+        <view class="bb-icon" bindtap="onReport">
+          <text class="bb-icon-text">⚠️</text>
+        </view>
+        <view wx:if="{{product.runnerId}}" class="bb-btn bb-btn-plain" bindtap="onChatRunner">联系接单人</view>
+        <view
+          wx:if="{{product.errandStatus === 'taken'}}"
+          class="bb-btn bb-btn-primary"
+          bindtap="onFinishErrand"
+        >确认完成</view>
+        <view
+          wx:elif="{{product.errandStatus === 'open'}}"
+          class="bb-btn bb-btn-plain"
+          bindtap="onCancelErrand"
+        >取消任务</view>
+        <view wx:else class="bb-btn bb-btn-plain is-blocked">{{errandStatusText}}</view>
+      </block>
+
+      <!-- 我是接单人 -->
+      <block wx:elif="{{isRunner}}">
+        <view class="bb-btn bb-btn-plain" bindtap="onChat">联系发布者</view>
+        <view
+          wx:if="{{product.errandStatus === 'taken'}}"
+          class="bb-btn bb-btn-danger"
+          bindtap="onAbandonErrand"
+        >放弃任务</view>
+        <view wx:else class="bb-btn bb-btn-plain is-blocked">{{errandStatusText}}</view>
+      </block>
+
+      <!-- 路人 -->
+      <block wx:else>
+        <view class="bb-icon" bindtap="toggleFavorite">
+          <text class="bb-icon-text">{{isFavorited ? '⭐' : '☆'}}</text>
+          <text class="bb-icon-label">{{isFavorited ? '已收藏' : '收藏'}}</text>
+        </view>
+        <view class="bb-btn bb-btn-plain" bindtap="onChat">联系TA</view>
+        <view
+          class="bb-btn bb-btn-primary {{product.errandStatus === 'open' ? '' : 'disabled'}}"
+          bindtap="{{product.errandStatus === 'open' ? 'onAcceptErrand' : ''}}"
+        >{{product.errandStatus === 'open' ? '我要接单' : errandStatusText}}</view>
+      </block>
+    </block>
+
+    <!-- ===== 闲置：卖家自己 ===== -->
+    <block wx:elif="{{isOwner}}">
+      <view class="bb-icon" bindtap="onReport">
+        <text class="bb-icon-text">⚠️</text>
+      </view>
+      <!-- 被平台强制下架的商品不允许卖家自己上架 -->
+      <view
+        wx:if="{{product.status !== 'blocked'}}"
+        class="bb-btn bb-btn-plain"
+        bindtap="onOffShelf"
+      >{{product.status === 'off_shelf' ? '重新上架' : '下架商品'}}</view>
+      <view wx:else class="bb-btn bb-btn-plain is-blocked">已被平台下架</view>
+      <view class="bb-btn bb-btn-danger" bindtap="onDelete">删除</view>
+    </block>
+
+    <!-- ===== 闲置：买家 ===== -->
+    <block wx:else>
+      <view class="bb-icon" bindtap="toggleFavorite">
+        <text class="bb-icon-text">{{isFavorited ? '⭐' : '☆'}}</text>
+        <text class="bb-icon-label">{{isFavorited ? '已收藏' : '收藏'}}</text>
+      </view>
+      <view class="bb-btn bb-btn-plain" bindtap="onChat">联系卖家</view>
+      <view
+        class="bb-btn bb-btn-primary {{product.status !== 'on_sale' ? 'disabled' : ''}}"
+        bindtap="{{product.status === 'on_sale' ? 'onBuy' : ''}}"
+      >{{product.status === 'on_sale' ? '立即购买' : statusText}}</view>
+    </block>
+
+  </view>
+
+</view>
+
+<view wx:elif="{{loading}}" class="page-loading">加载中…</view>
+
+<empty-state
+  wx:elif="{{notFound}}"
+  icon="😕"
+  text="该内容已被删除，返回列表会自动刷新"
+  btnText="返回并刷新列表"
+  bind:btntap="goBack"
+/>
+
+<!-- 非 404 的失败（网络异常、未登录、服务故障）：如实显示原因并允许重试。
+     原来这里是无条件的 wx:else，所有失败都伪装成「商品不存在或已被删除」，
+     会让人误以为是数据问题，其实可能只是网络抖了一下。 -->
+<empty-state
+  wx:else
+  icon="😥"
+  text="{{loadError || '加载失败，请稍后重试'}}"
+  btnText="重试"
+  bind:btntap="retry"
+/>

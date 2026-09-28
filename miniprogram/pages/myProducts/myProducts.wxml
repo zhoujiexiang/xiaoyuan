@@ -1,0 +1,52 @@
+<view class="page">
+
+  <view class="tabs">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="key"
+      class="tab {{activeTab === item.key ? 'active' : ''}}"
+      data-key="{{item.key}}"
+      bindtap="onTabTap"
+    >
+      <text>{{item.label}}</text>
+      <view wx:if="{{activeTab === item.key}}" class="tab-line"></view>
+    </view>
+  </view>
+
+  <view wx:if="{{list.length > 0}}" class="list">
+    <view wx:for="{{list}}" wx:key="_id" class="list-item">
+      <product-card
+        class="pcard-cell"
+        item="{{item}}"
+        showSeller="{{false}}"
+        showStatus="{{true}}"
+        bind:cardtap="onCardTap"
+      />
+      <!-- 在售 / 已下架的商品，列表里直接给一个上下架入口，不用点进详情 -->
+      <view
+        wx:if="{{item.status === 'on_sale' || item.status === 'off_shelf'}}"
+        class="row-actions"
+      >
+        <view
+          class="ra-btn {{item.status === 'off_shelf' ? 'ra-btn-primary' : ''}}"
+          data-id="{{item._id}}"
+          data-status="{{item.status}}"
+          data-title="{{item.title}}"
+          bindtap="onToggleShelf"
+        >{{item.status === 'off_shelf' ? '重新上架' : '下架'}}</view>
+      </view>
+    </view>
+  </view>
+
+  <empty-state
+    wx:if="{{!loading && list.length === 0}}"
+    icon="📦"
+    text="还没有发布过闲置"
+    btnText="去发布"
+    bind:btntap="goPublish"
+  />
+
+  <view wx:if="{{loading}}" class="loading-more">加载中…</view>
+  <view wx:elif="{{!hasMore && list.length > 0}}" class="loading-more">— 没有更多了 —</view>
+
+</view>

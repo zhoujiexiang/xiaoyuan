@@ -1,0 +1,16 @@
+# 微信开发者工具的本地私有配置（含本机路径、开发者工具偏好，不入库）
+project.private.config.json
+
+# 云函数依赖（部署时用 --remote-npm-install 在云端安装）
+node_modules/
+cloudfunctions/*/node_modules/
+package-lock.json
+
+# WorkBuddy 工作区数据（临时脚本、截图缓存）
+.workbuddy/
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

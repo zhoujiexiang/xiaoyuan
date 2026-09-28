@@ -1,0 +1,69 @@
+<!--
+  必须是 catchtap（不是 bindtap）：
+  用 bindtap 时，组件内部的 tap 会**冒泡出组件边界**，父页面绑的 bind:tap
+  会再被触发一次且 e.detail 为空 → 拼出 ?id=undefined → 详情页报「商品不存在」。
+  catchtap 阻断冒泡，只保留下面 triggerEvent 抛出的自定义事件这一条通路。
+-->
+<view class="pcard" catchtap="onTap" hover-class="pcard-hover">
+  <view class="pcard-img-wrap">
+    <image
+      wx:if="{{item.cover}}"
+      class="pcard-img"
+      src="{{item.cover}}"
+      mode="aspectFill"
+      lazy-load
+    />
+    <!-- 跑腿任务经常不上图，用一块色块占位，别留个裂图 -->
+    <view wx:else class="pcard-img pcard-img-errand">
+      <text class="pie-icon">{{errandIcon}}</text>
+      <text class="pie-text">校园跑腿</text>
+    </view>
+
+    <!-- 跑腿的角标始终显示（待接单/进行中/已完成比「在售」更重要） -->
+    <view wx:if="{{isErrand}}" class="pcard-badge {{statusClass}}">{{statusText}}</view>
+    <view wx:elif="{{showStatus}}" class="pcard-badge {{statusClass}}">{{statusText}}</view>
+    <view wx:elif="{{item.status === 'sold'}}" class="pcard-mask">
+      <text class="pcard-mask-text">已售出</text>
+    </view>
+  </view>
+
+  <view class="pcard-body">
+    <view class="pcard-title ellipsis-2">{{item.title}}</view>
+
+    <view wx:if="{{isErrand}}" class="pcard-place">
+      <text class="pcard-place-icon">🛵</text>
+      <text class="ellipsis">{{item.fromPlace}} → {{item.toPlace}}</text>
+    </view>
+    <view wx:elif="{{item.tradePlace}}" class="pcard-place">
+      <text class="pcard-place-icon">📍</text>
+      <text class="ellipsis">{{item.tradePlace}}</text>
+    </view>
+
+    <view class="pcard-bottom">
+      <view class="row">
+        <text wx:if="{{isErrand}}" class="pcard-reward">酬劳</text>
+        <text class="price price-symbol">¥</text>
+        <text class="price price-num">{{priceText}}</text>
+        <text wx:if="{{!isErrand && item.oriPrice}}" class="price-ori">¥{{item.oriPrice}}</text>
+      </view>
+      <text class="pcard-time">{{isErrand && deadlineText ? deadlineText : timeText}}</text>
+    </view>
+
+    <view wx:if="{{isErrand && item.runnerName}}" class="pcard-runner">
+      <text class="ellipsis">🏃 {{item.runnerName}} 已接单</text>
+    </view>
+
+    <!-- 卖家行整行可点 → 进对方主页（点头像私聊）。
+         必须用 catchtap：不然会冒泡到根节点的 catchtap，变成「点卖家 → 跳商品详情」。
+         事件名也不能叫 tap（内置事件同名会导致父页面收到两次调用，改叫 sellertap）。 -->
+    <view
+      wx:if="{{showSeller && item.sellerName}}"
+      class="pcard-seller"
+      catchtap="onSellerTap"
+    >
+      <image class="pcard-avatar" src="{{item.sellerAvatar}}" mode="aspectFill" />
+      <text class="pcard-seller-name ellipsis">{{item.sellerName}}</text>
+      <text class="pcard-view">{{item.viewCount || 0}} 浏览</text>
+    </view>
+  </view>
+</view>

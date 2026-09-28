@@ -1,0 +1,47 @@
+<view class="page">
+
+  <view class="card">
+    <view class="form-item">
+      <text class="form-label">头像</text>
+
+      <!-- 微信官方要求：头像用 open-type="chooseAvatar" 获取 -->
+      <button
+        class="avatar-btn"
+        open-type="chooseAvatar"
+        bindchooseavatar="onChooseAvatar"
+      >
+        <image wx:if="{{avatarUrl}}" class="avatar-img" src="{{avatarUrl}}" mode="aspectFill" />
+        <view wx:else class="avatar-empty"><text class="ae-plus">＋</text></view>
+      </button>
+
+      <text class="avatar-hint">点击更换</text>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">昵称</text>
+      <!-- type="nickname" 会在键盘上方给出「使用微信昵称」的快捷填充 -->
+      <input
+        class="form-input"
+        type="nickname"
+        placeholder="点击使用微信昵称"
+        placeholder-class="form-placeholder"
+        value="{{nickName}}"
+        maxlength="20"
+        bindchange="onNickChange"
+        bindblur="onNickChange"
+      />
+    </view>
+  </view>
+
+  <view class="tip">头像和昵称会展示在你发布的商品、聊天和订单里</view>
+
+  <view class="actions">
+    <button
+      class="btn btn-primary btn-block"
+      bindtap="onSave"
+      loading="{{saving}}"
+      disabled="{{saving}}"
+    >保存</button>
+  </view>
+
+</view>

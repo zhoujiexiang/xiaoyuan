@@ -1,0 +1,92 @@
+<view class="page">
+
+  <!-- 搜索栏 -->
+  <view class="search-bar" bindtap="goSearch">
+    <view class="search-input">
+      <text class="search-icon">🔍</text>
+      <text class="search-placeholder">{{contentType === 'errand' ? '搜索跑腿任务' : '搜索你想要的闲置'}}</text>
+    </view>
+  </view>
+
+  <!-- 内容类型切换 -->
+  <view class="type-tabs">
+    <view
+      class="type-tab {{contentType === 'goods' ? 'active' : ''}}"
+      data-type="goods"
+      bindtap="onTypeTap"
+    >二手闲置</view>
+    <view
+      class="type-tab {{contentType === 'errand' ? 'active' : ''}}"
+      data-type="errand"
+      bindtap="onTypeTap"
+    >校园跑腿</view>
+  </view>
+
+  <!-- 顶部提示条 -->
+  <view class="notice">
+    <text class="notice-text">{{banners[0].text}}</text>
+    <text class="notice-sub">{{banners[0].sub}}</text>
+  </view>
+
+  <!-- 分类横向滚动（跑腿没有分类，隐藏） -->
+  <scroll-view
+    wx:if="{{contentType === 'goods'}}"
+    class="cate-scroll"
+    scroll-x
+    enable-flex
+    show-scrollbar="{{false}}"
+  >
+    <view class="cate-list">
+      <view
+        class="cate-item {{activeCategory === '' ? 'active' : ''}}"
+        data-id=""
+        bindtap="onCategoryTap"
+      >全部</view>
+      <view
+        wx:for="{{categories}}"
+        wx:key="id"
+        class="cate-item {{activeCategory === item.id ? 'active' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="onCategoryTap"
+      >{{item.name}}</view>
+    </view>
+  </scroll-view>
+
+  <!-- 商品瀑布流（两列） -->
+  <view wx:if="{{list.length > 0}}" class="grid">
+    <view class="grid-col">
+      <product-card
+        wx:for="{{list}}"
+        wx:key="_id"
+        wx:if="{{index % 2 === 0}}"
+        class="pcard-cell"
+        item="{{item}}"
+        bind:cardtap="onCardTap"
+        bind:sellertap="onSellerTap"
+      />
+    </view>
+    <view class="grid-col">
+      <product-card
+        wx:for="{{list}}"
+        wx:key="_id"
+        wx:if="{{index % 2 === 1}}"
+        class="pcard-cell"
+        item="{{item}}"
+        bind:cardtap="onCardTap"
+        bind:sellertap="onSellerTap"
+      />
+    </view>
+  </view>
+
+  <empty-state
+    wx:if="{{!loading && list.length === 0}}"
+    icon="{{emptyIcon}}"
+    text="{{emptyText}}"
+    btnText="{{emptyBtn}}"
+    bind:btntap="goPublish"
+  />
+
+  <view wx:if="{{loading}}" class="loading-more">加载中…</view>
+  <view wx:elif="{{!hasMore && list.length > 0}}" class="loading-more">— 没有更多了 —</view>
+
+</view>

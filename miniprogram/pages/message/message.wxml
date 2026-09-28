@@ -1,0 +1,62 @@
+<view class="page">
+
+  <view wx:if="{{needLogin}}" class="login-mask">
+    <text class="lm-icon">🔒</text>
+    <text class="lm-text">登录后查看消息</text>
+    <view class="btn btn-primary lm-btn" bindtap="goLogin">立即登录</view>
+  </view>
+
+  <block wx:else>
+    <view wx:if="{{list.length > 0}}" class="conv-list">
+      <view
+        wx:for="{{list}}"
+        wx:key="conversationId"
+        class="conv"
+        hover-class="conv-hover"
+        data-conversation-id="{{item.conversationId}}"
+        data-peer-id="{{item.peer._id}}"
+        data-peer-name="{{item.peer.nickName}}"
+        data-peer-avatar="{{item.peer.avatarUrl}}"
+        data-product-id="{{item.product._id}}"
+        data-product-title="{{item.product.title}}"
+        bindtap="onConversationTap"
+      >
+        <!-- 点头像 → 对方主页（可以从那里再发起私聊）。
+             必须 catchtap：否则会冒泡到整行的 bindtap，变成「点头像直接进聊天」。 -->
+        <view
+          class="conv-avatar-wrap"
+          catchtap="onAvatarTap"
+          data-peer-id="{{item.peer._id}}"
+        >
+          <image class="conv-avatar" src="{{item.peer.avatarUrl}}" mode="aspectFill" />
+          <view wx:if="{{item.unreadCount > 0}}" class="conv-badge">
+            {{item.unreadCount > 99 ? '99+' : item.unreadCount}}
+          </view>
+        </view>
+
+        <view class="conv-body">
+          <view class="row-between">
+            <text class="conv-name ellipsis">{{item.peer.nickName}}</text>
+            <text class="conv-time">{{item.timeText}}</text>
+          </view>
+          <text class="conv-msg ellipsis">{{item.lastMessage.content}}</text>
+          <view wx:if="{{item.product.title}}" class="conv-product">
+            <text class="conv-product-icon">🔖</text>
+            <text class="ellipsis">{{item.product.title}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <empty-state
+      wx:if="{{!loading && list.length === 0}}"
+      icon="💬"
+      text="还没有消息，去和同学聊聊吧"
+      btnText="逛逛闲置"
+      bind:btntap="goHome"
+    />
+
+    <view wx:if="{{loading}}" class="loading-more">加载中…</view>
+  </block>
+
+</view>

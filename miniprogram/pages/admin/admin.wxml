@@ -1,0 +1,83 @@
+<view class="page">
+
+  <view wx:if="{{noPerm}}" class="no-perm">
+    <text class="np-icon">🔒</text>
+    <text class="np-text">你没有管理员权限</text>
+    <text class="np-sub">如需权限请联系平台管理员</text>
+    <view class="btn btn-plain np-btn" bindtap="goBack">返回</view>
+  </view>
+
+  <block wx:else>
+
+    <view class="banner">
+      <text class="banner-title">管理后台</text>
+      <text class="banner-sub">认证审核 · 举报处理 · 商品管理</text>
+    </view>
+
+    <!-- 待办提醒 -->
+    <view wx:if="{{stats.pendingVerify > 0 || stats.pendingReports > 0}}" class="todo">
+      <text class="todo-title">待处理</text>
+      <view class="todo-list">
+        <view wx:if="{{stats.pendingVerify > 0}}" class="todo-item" bindtap="goVerifyList">
+          <text class="td-icon">🎓</text>
+          <text class="td-text">学生认证申请</text>
+          <text class="td-count">{{stats.pendingVerify}}</text>
+          <text class="td-arrow">›</text>
+        </view>
+        <view wx:if="{{stats.pendingReports > 0}}" class="todo-item" bindtap="goReportList">
+          <text class="td-icon">⚠️</text>
+          <text class="td-text">待处理举报</text>
+          <text class="td-count">{{stats.pendingReports}}</text>
+          <text class="td-arrow">›</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 概览数据 -->
+    <view class="card">
+      <view class="sec-title">平台概览</view>
+      <view class="stat-grid">
+        <view class="stat-cell">
+          <text class="sc-num">{{stats.totalUsers}}</text>
+          <text class="sc-label">注册用户</text>
+        </view>
+        <view class="stat-cell">
+          <text class="sc-num">{{stats.onSaleProducts}}</text>
+          <text class="sc-label">在售商品</text>
+        </view>
+        <view class="stat-cell">
+          <text class="sc-num">{{stats.totalOrders}}</text>
+          <text class="sc-label">累计订单</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 功能入口 -->
+    <view class="card card-flat menu">
+      <view class="menu-item" bindtap="goVerifyList">
+        <text class="mi-icon">🎓</text>
+        <text class="mi-text">认证审核</text>
+        <text wx:if="{{stats.pendingVerify > 0}}" class="mi-badge">{{stats.pendingVerify}}</text>
+        <text class="mi-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goReportList">
+        <text class="mi-icon">⚠️</text>
+        <text class="mi-text">举报处理</text>
+        <text wx:if="{{stats.pendingReports > 0}}" class="mi-badge">{{stats.pendingReports}}</text>
+        <text class="mi-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goProductList">
+        <text class="mi-icon">📦</text>
+        <text class="mi-text">商品管理</text>
+        <text class="mi-arrow">›</text>
+      </view>
+    </view>
+
+    <view class="tip">
+      提示：管理员名单存在数据库 <text class="mono">config/admin</text> 文档的 openids 字段，
+      增删管理员直接改这个数组即可，不用改代码。
+    </view>
+
+  </block>
+
+</view>

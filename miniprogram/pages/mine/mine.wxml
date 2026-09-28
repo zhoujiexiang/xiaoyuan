@@ -1,0 +1,152 @@
+<view class="page">
+
+  <view wx:if="{{needLogin}}" class="login-mask">
+    <text class="lm-icon">🔒</text>
+    <text class="lm-text">登录后查看个人信息</text>
+
+    <!-- 显示真实失败原因：没初始化 / 云函数没部署 / 环境配错，处理方式完全不同 -->
+    <text wx:if="{{loginError}}" class="lm-err">{{loginError}}</text>
+
+    <view class="btn btn-primary lm-btn" bindtap="goLogin">立即登录</view>
+
+    <!-- 登录失败时也要能进初始化：数据库没建的话，登录本身就会失败，
+         如果初始化入口藏在登录态里，就变成了死锁。
+         但这是开发期工具，正式版不显示（见 mine.js 的 showDebugTools） -->
+    <view wx:if="{{showDebugTools}}" class="lm-init" bindtap="onInitDb">🗄️ 初始化数据库</view>
+  </view>
+
+  <block wx:else>
+
+    <!-- 用户信息头部 -->
+    <view class="header">
+      <view class="header-bg"></view>
+      <view class="header-content" bindtap="goProfile">
+        <image
+          wx:if="{{userInfo.avatarUrl}}"
+          class="avatar"
+          src="{{userInfo.avatarUrl}}"
+          mode="aspectFill"
+        />
+        <view wx:else class="avatar avatar-empty"><text class="ae-plus">＋</text></view>
+
+        <view class="flex-1">
+          <view class="row">
+            <text class="nickname">{{userInfo.nickName || '微信用户'}}</text>
+            <!-- 用 catchtap：否则点徽章会冒泡到外层，连带打开「编辑资料」 -->
+            <!-- ⚠️ 内容和标签必须写在同一行：<text> 会把内容里的换行当换行符渲染，
+                 徽章里会多出一个空行，把「已认证」挤到下半格（看着「偏下、贴底边」）。 -->
+            <text class="tag {{verifyClass}} name-tag" catchtap="goVerify">{{verifyText}}</text>
+          </view>
+          <text class="school" wx:if="{{userInfo.schoolName}}">🏫 {{userInfo.schoolName}}</text>
+          <text class="school" wx:else>未选择学校</text>
+        </view>
+
+        <text class="profile-edit">编辑 ›</text>
+      </view>
+
+      <!-- 统计数据 -->
+      <view class="stats">
+        <view class="stat" data-status="on_sale" bindtap="goMyProducts">
+          <text class="stat-num">{{stats.onSale}}</text>
+          <text class="stat-label">在售</text>
+        </view>
+        <view class="stat-line"></view>
+        <view class="stat" data-status="sold" bindtap="goMyProducts">
+          <text class="stat-num">{{stats.sold}}</text>
+          <text class="stat-label">已售出</text>
+        </view>
+        <view class="stat-line"></view>
+        <view class="stat" bindtap="goFavorites">
+          <text class="stat-num">{{stats.favCount}}</text>
+          <text class="stat-label">收藏</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 认证提示 -->
+    <view
+      wx:if="{{userInfo.verifyStatus !== 'passed'}}"
+      class="verify-tip"
+      bindtap="goVerify"
+    >
+      <text class="vt-icon">🎓</text>
+      <view class="flex-1">
+        <text class="vt-title">{{userInfo.verifyStatus === 'pending' ? '认证审核中' : '完成校园认证'}}</text>
+        <text class="vt-sub">{{userInfo.verifyStatus === 'pending' ? '我们会在 1-2 个工作日内完成审核' : '认证后才能发布商品，交易更放心'}}</text>
+      </view>
+      <text class="vt-arrow">›</text>
+    </view>
+
+    <!-- 我的订单 -->
+    <view class="card card-flat">
+      <view class="sec-head">
+        <text class="bold">我的订单</text>
+      </view>
+      <view class="order-types">
+        <view class="order-type" data-role="buyer" bindtap="goMyOrders">
+          <text class="ot-icon">🛍️</text>
+          <text class="ot-text">我买到的</text>
+        </view>
+        <view class="order-type" data-role="seller" bindtap="goMyOrders">
+          <text class="ot-icon">💰</text>
+          <text class="ot-text">我卖出的</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 功能菜单 -->
+    <view class="card card-flat menu">
+      <view class="menu-item" data-status="" bindtap="goMyProducts">
+        <text class="mi-icon">📦</text>
+        <text class="mi-text">我的发布</text>
+        <text class="mi-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goFavorites">
+        <text class="mi-icon">⭐</text>
+        <text class="mi-text">我的收藏</text>
+        <text class="mi-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goMyErrands">
+        <text class="mi-icon">🛵</text>
+        <text class="mi-text">我的跑腿</text>
+        <text class="mi-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goVerify">
+        <text class="mi-icon">🎓</text>
+        <text class="mi-text">校园认证</text>
+        <text class="mi-arrow">›</text>
+      </view>
+      <view wx:if="{{isAdmin}}" class="menu-item" bindtap="goAdmin">
+        <text class="mi-icon">🛠️</text>
+        <text class="mi-text">管理后台</text>
+        <text wx:if="{{pendingCount > 0}}" class="mi-badge">{{pendingCount}}</text>
+        <text class="mi-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="onFeedback">
+        <text class="mi-icon">💬</text>
+        <text class="mi-text">意见反馈</text>
+        <text class="mi-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="onAbout">
+        <text class="mi-icon">ℹ️</text>
+        <text class="mi-text">关于我们</text>
+        <text class="mi-arrow">›</text>
+      </view>
+      <view wx:if="{{showDebugTools}}" class="menu-item" bindtap="onInitDb">
+        <text class="mi-icon">🗄️</text>
+        <text class="mi-text">初始化数据库</text>
+        <text class="mi-hint">仅首次部署</text>
+        <text class="mi-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 退出登录 -->
+    <view class="card card-flat logout-wrap">
+      <view class="logout-btn" bindtap="onLogout">退出登录</view>
+      <text class="logout-tip">退出后需要重新点击登录才能使用发布、下单等功能</text>
+    </view>
+
+    <view class="footer">校园二手 · 让闲置流动起来</view>
+  </block>
+
+</view>

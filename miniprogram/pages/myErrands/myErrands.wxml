@@ -1,0 +1,67 @@
+<view class="page">
+
+  <view wx:if="{{needLogin}}" class="login-mask">
+    <text class="lm-icon">🔒</text>
+    <text class="lm-text">登录后查看我的跑腿</text>
+    <view class="btn btn-primary lm-btn" bindtap="goLogin">立即登录</view>
+  </view>
+
+  <block wx:else>
+    <view class="tabs">
+      <view
+        class="tab {{role === 'publisher' ? 'active' : ''}}"
+        data-role="publisher"
+        bindtap="switchRole"
+      >我发布的</view>
+      <view
+        class="tab {{role === 'runner' ? 'active' : ''}}"
+        data-role="runner"
+        bindtap="switchRole"
+      >我接的</view>
+    </view>
+
+    <view wx:if="{{list.length > 0}}" class="list">
+      <view wx:for="{{list}}" wx:key="_id" class="list-item">
+        <product-card
+          class="pcard-cell"
+          item="{{item}}"
+          showSeller="{{false}}"
+          showStatus="{{true}}"
+          bind:cardtap="onCardTap"
+        />
+        <!-- 已结束的任务（已取消 / 已完成）直接在列表里给删除入口，不用点进详情。
+             只给「我发布的」——接单人没权限删发布者的记录。 -->
+        <view
+          wx:if="{{role === 'publisher' && (item.errandStatus === 'canceled' || item.errandStatus === 'done')}}"
+          class="row-actions"
+        >
+          <view
+            class="ra-btn ra-btn-danger"
+            data-id="{{item._id}}"
+            data-title="{{item.title}}"
+            bindtap="onDelete"
+          >删除</view>
+        </view>
+      </view>
+    </view>
+
+    <empty-state
+      wx:if="{{!loading && !errorText && list.length === 0}}"
+      icon="🛵"
+      text="{{role === 'publisher' ? '你还没有发布过跑腿任务' : '你还没有接过跑腿任务'}}"
+      btnText="去发一个"
+      bind:btntap="goPublish"
+    />
+
+    <empty-state
+      wx:if="{{!loading && errorText}}"
+      icon="😥"
+      text="{{errorText}}"
+      btnText="重试"
+      bind:btntap="loadList"
+    />
+
+    <view wx:if="{{loading}}" class="loading-more">加载中…</view>
+  </block>
+
+</view>

@@ -1,0 +1,77 @@
+<view class="page" wx:if="{{!loading && userInfo}}">
+
+  <!-- 用户信息 -->
+  <view class="hero">
+    <image
+      wx:if="{{userInfo.avatarUrl}}"
+      class="hero-avatar"
+      src="{{userInfo.avatarUrl}}"
+      mode="aspectFill"
+    />
+    <view wx:else class="hero-avatar hero-avatar-empty"><text>👤</text></view>
+
+    <view class="hero-name">
+      <text class="hero-nickname">{{userInfo.nickName || '微信用户'}}</text>
+      <text class="tag {{verifyClass}}">{{verifyText}}</text>
+    </view>
+
+    <view class="hero-meta">
+      <text wx:if="{{userInfo.schoolName}}">🏫 {{userInfo.schoolName}}</text>
+      <text>信用分 {{userInfo.creditScore}}</text>
+      <text wx:if="{{joinText}}">{{joinText}}加入</text>
+    </view>
+
+    <view wx:if="{{banned}}" class="hero-banned">该账号已被封禁</view>
+  </view>
+
+  <!-- 操作 -->
+  <view class="actions">
+    <view wx:if="{{isSelf}}" class="hero-btn hero-btn-plain" bindtap="goHome">这是我自己的主页</view>
+    <view wx:else class="hero-btn hero-btn-primary" bindtap="onChat">发消息</view>
+  </view>
+
+  <!-- TA 的在售 -->
+  <view class="sec-head">
+    <text class="bold">TA 的在售</text>
+    <text class="text-sm text-gray">{{products.length}} 件</text>
+  </view>
+
+  <view wx:if="{{products.length > 0}}" class="list">
+    <product-card
+      wx:for="{{products}}"
+      wx:key="_id"
+      class="pcard-cell"
+      item="{{item}}"
+      showSeller="{{false}}"
+      bind:cardtap="onCardTap"
+    />
+  </view>
+
+  <empty-state
+    wx:elif="{{!loading}}"
+    icon="📦"
+    text="TA 还没有在售的物品"
+    btnText="去逛逛"
+    bind:btntap="goHome"
+  />
+
+</view>
+
+<view wx:elif="{{loading}}" class="page-loading">加载中…</view>
+
+<empty-state
+  wx:elif="{{notFound}}"
+  icon="😕"
+  text="该用户不存在或已注销"
+  btnText="返回"
+  bind:btntap="goBack"
+/>
+
+<!-- 加载失败（网络/服务异常）单独一条分支，不要伪装成「用户不存在」 -->
+<empty-state
+  wx:else
+  icon="😥"
+  text="{{loadError || '加载失败，请稍后重试'}}"
+  btnText="重试"
+  bind:btntap="retry"
+/>

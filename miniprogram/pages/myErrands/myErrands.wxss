@@ -1,0 +1,77 @@
+/* pages/myErrands/myErrands.wxss */
+.page { padding-bottom: 40rpx; }
+
+.tabs {
+  display: flex;
+  background: #fff;
+  padding: 0 24rpx;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.tab {
+  position: relative;
+  margin-right: 48rpx;
+  padding: 24rpx 0;
+  font-size: 30rpx;
+  color: #999;
+}
+.tab.active {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+.tab.active::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 40rpx;
+  height: 6rpx;
+  margin-left: -20rpx;
+  border-radius: 3rpx;
+  background: #07c160;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx 24rpx 0;
+}
+
+.list-item { margin-bottom: 0; }
+
+/* 贴在卡片下方，视觉上与卡片连成一块；margin-top 用负值抵消卡片自带的 20rpx 下边距 */
+.row-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: -20rpx 0 20rpx;
+  padding: 16rpx 24rpx;
+  background: #fff;
+  border-radius: 0 0 16rpx 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+.ra-btn {
+  padding: 10rpx 30rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 999rpx;
+  font-size: 26rpx;
+  color: #666;
+  background: #fff;
+}
+.ra-btn-danger {
+  color: #fa5151;
+  border-color: #ffd6d6;
+}
+
+/* 未登录遮罩（与「我的」页保持一致的观感） */
+.login-mask {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 240rpx 60rpx;
+}
+.lm-icon { font-size: 100rpx; opacity: 0.4; margin-bottom: 32rpx; }
+.lm-text { color: #999; font-size: 28rpx; margin-bottom: 60rpx; }
+.lm-btn { width: 400rpx; }

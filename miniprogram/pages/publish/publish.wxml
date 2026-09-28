@@ -1,0 +1,259 @@
+<view class="page">
+
+  <!-- 返回首页：发布是 tabBar 页，系统导航栏不带返回箭头，
+       从这里进来后没有别的路回首页（只能点底部 tab），所以补一个明确入口。
+       放在分支外面 —— 未登录被拦时也要能退回去。 -->
+  <view class="back-bar">
+    <view class="back-home" bindtap="goHome" hover-class="back-home-hover">
+      <text class="bh-arrow">‹</text>
+      <text>返回首页</text>
+    </view>
+  </view>
+
+  <!-- 未登录遮罩 -->
+  <view wx:if="{{needLogin}}" class="login-mask">
+    <text class="lm-icon">🔒</text>
+    <text class="lm-text">登录后才能发布</text>
+    <view class="btn btn-primary lm-btn" bindtap="goLogin">立即登录</view>
+  </view>
+
+  <block wx:else>
+
+    <!-- 发布类型切换 -->
+    <view class="mode-tabs">
+      <view
+        class="mode-tab {{mode === 'goods' ? 'active' : ''}}"
+        data-mode="goods"
+        bindtap="onModeTap"
+      >
+        <text class="mt-icon">🏷️</text>
+        <text class="mt-text">卖闲置</text>
+      </view>
+      <view
+        class="mode-tab {{mode === 'errand' ? 'active' : ''}}"
+        data-mode="errand"
+        bindtap="onModeTap"
+      >
+        <text class="mt-icon">🛵</text>
+        <text class="mt-text">发跑腿</text>
+      </view>
+    </view>
+
+    <!-- 图片上传 -->
+    <view class="card">
+      <view class="row-between sec-head">
+        <text class="bold">{{mode === 'errand' ? '任务图片（选填）' : '商品图片'}}</text>
+        <text class="text-sm text-gray">{{images.length}}/9</text>
+      </view>
+
+      <view class="img-grid">
+        <view
+          wx:for="{{images}}"
+          wx:key="*this"
+          class="img-item"
+          data-index="{{index}}"
+          bindtap="previewImage"
+        >
+          <image class="img-thumb" src="{{item}}" mode="aspectFill" />
+          <view class="img-del" data-index="{{index}}" catchtap="deleteImage">✕</view>
+          <view wx:if="{{index === 0}}" class="img-cover">封面</view>
+        </view>
+
+        <view wx:if="{{images.length < 9}}" class="img-add" bindtap="chooseImage">
+          <text class="img-add-icon">＋</text>
+          <text class="img-add-text">添加图片</text>
+        </view>
+      </view>
+
+      <!-- ⚠️ 内容必须与标签同行：<text> 会把内容里的换行渲染成换行符，上方会多出一个空行 -->
+      <text class="tip">{{mode === 'errand' ? '没有图片也能发，比如「帮我取个快递」' : '第一张图片将作为封面，建议使用清晰的实物照片'}}</text>
+    </view>
+
+    <!-- 基本信息 -->
+    <view class="card">
+      <view class="sec-head"><text class="bold">基本信息</text></view>
+
+      <view class="form-item">
+        <text class="form-label">标题</text>
+        <input
+          class="form-input"
+          value="{{title}}"
+          data-field="title"
+          placeholder="{{mode === 'errand' ? '如：帮忙去菜鸟驿站取个快递' : '如：高等数学教材 第七版 九成新'}}"
+          placeholder-class="form-placeholder"
+          maxlength="30"
+          bindinput="onInput"
+        />
+      </view>
+
+      <view class="form-item form-item-col">
+        <text class="form-label">描述</text>
+        <textarea
+          class="form-textarea"
+          value="{{desc}}"
+          data-field="desc"
+          placeholder="{{mode === 'errand' ? '说清楚要带什么、送到哪、有什么要求，接单的同学才不会跑空' : '说说成色、购买时间、有无笔记等，描述清楚更容易卖出'}}"
+          placeholder-class="form-placeholder"
+          maxlength="500"
+          bindinput="onInput"
+        />
+        <text class="counter">{{desc.length}}/500</text>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">{{mode === 'errand' ? '酬劳' : '售价'}}</text>
+        <input
+          class="form-input"
+          type="digit"
+          value="{{price}}"
+          data-field="price"
+          placeholder="{{mode === 'errand' ? '想给多少酬劳' : '0.00'}}"
+          placeholder-class="form-placeholder"
+          bindinput="onInput"
+        />
+        <text class="unit">元</text>
+      </view>
+
+      <view wx:if="{{mode !== 'errand'}}" class="form-item">
+        <text class="form-label">原价</text>
+        <input
+          class="form-input"
+          type="digit"
+          value="{{oriPrice}}"
+          data-field="oriPrice"
+          placeholder="选填，用于显示划线价"
+          placeholder-class="form-placeholder"
+          bindinput="onInput"
+        />
+        <text class="unit">元</text>
+      </view>
+    </view>
+
+    <!-- 闲置：分类与面交 -->
+    <view wx:if="{{mode !== 'errand'}}" class="card">
+      <view class="sec-head"><text class="bold">分类与交易</text></view>
+
+      <picker mode="selector" range="{{categories}}" range-key="name" bindchange="onCategoryChange">
+        <view class="form-item">
+          <text class="form-label">分类</text>
+          <view class="form-input picker-val {{categoryName ? '' : 'form-placeholder'}}">
+            {{categoryName || '请选择分类'}}
+          </view>
+          <text class="arrow">›</text>
+        </view>
+      </picker>
+
+      <!-- 面交地点由用户自己打字描述（不再预设选项：校园地点太多，选项永远不够用） -->
+      <view class="form-item">
+        <text class="form-label">面交地点</text>
+        <input
+          class="form-input"
+          value="{{tradePlace}}"
+          data-field="tradePlace"
+          placeholder="如：图书馆门口 / 一食堂门口"
+          placeholder-class="form-placeholder"
+          maxlength="30"
+          bindinput="onInput"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">联系方式</text>
+        <input
+          class="form-input"
+          value="{{contact}}"
+          data-field="contact"
+          placeholder="选填，微信号/QQ"
+          placeholder-class="form-placeholder"
+          bindinput="onInput"
+        />
+      </view>
+    </view>
+
+    <!-- 跑腿：任务信息 -->
+    <view wx:else class="card">
+      <view class="sec-head"><text class="bold">跑腿信息</text></view>
+
+      <view class="form-item form-item-col">
+        <text class="form-label">跑腿类型</text>
+        <view class="et-grid">
+          <view
+            wx:for="{{errandTypes}}"
+            wx:key="id"
+            class="et-chip {{errandType === item.id ? 'active' : ''}}"
+            data-id="{{item.id}}"
+            data-name="{{item.name}}"
+            bindtap="onErrandTypeTap"
+          >
+            <text class="et-icon">{{item.icon}}</text>
+            <text class="et-name">{{item.name}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">取件地</text>
+        <input
+          class="form-input"
+          value="{{fromPlace}}"
+          data-field="fromPlace"
+          placeholder="如：菜鸟驿站 / 二食堂"
+          placeholder-class="form-placeholder"
+          maxlength="30"
+          bindinput="onInput"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">送达地</text>
+        <input
+          class="form-input"
+          value="{{toPlace}}"
+          data-field="toPlace"
+          placeholder="如：3 栋宿舍楼下"
+          placeholder-class="form-placeholder"
+          maxlength="30"
+          bindinput="onInput"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">完成时间</text>
+        <picker mode="date" value="{{deadlineDate}}" start="{{today}}" bindchange="onDeadlineDateChange">
+          <view class="picker-val">{{deadlineDate}}</view>
+        </picker>
+        <picker mode="time" value="{{deadlineTime}}" bindchange="onDeadlineTimeChange">
+          <view class="picker-val picker-val-time">{{deadlineTime}}</view>
+        </picker>
+        <text class="unit">前</text>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">联系方式</text>
+        <input
+          class="form-input"
+          value="{{contact}}"
+          data-field="contact"
+          placeholder="选填，微信号/QQ"
+          placeholder-class="form-placeholder"
+          bindinput="onInput"
+        />
+      </view>
+    </view>
+
+    <view class="safe-tip">
+      <text class="safe-icon">🛡️</text>
+      <!-- ⚠️ 内容必须与标签同行（同 .tip 的坑） -->
+      <text>{{mode === 'errand' ? '请勿发布代考、代写、代买烟酒等违规任务' : '平台将对发布内容进行安全检测，请勿发布违禁物品'}}</text>
+    </view>
+
+    <view class="submit-wrap">
+      <button
+        class="btn btn-primary btn-block"
+        disabled="{{submitting}}"
+        bindtap="onSubmit"
+      >{{submitting ? '发布中…' : (mode === 'errand' ? '发布跑腿任务' : '发布')}}</button>
+    </view>
+
+  </block>
+</view>

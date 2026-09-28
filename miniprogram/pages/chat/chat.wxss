@@ -1,0 +1,170 @@
+page { background: #f5f6f8; height: 100%; }
+
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* 商品条 */
+.product-bar {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #f0f0f0;
+  flex-shrink: 0;
+}
+.pb-label {
+  font-size: 22rpx;
+  color: #07c160;
+  background: #e8f7ee;
+  padding: 4rpx 12rpx;
+  border-radius: 6rpx;
+  flex-shrink: 0;
+}
+.pb-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 26rpx;
+  color: #333;
+  margin: 0 16rpx;
+}
+.pb-arrow { color: #ccc; font-size: 32rpx; }
+
+/* 纯私聊时的对方信息条（点它进对方主页） */
+.peer-bar {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #f0f0f0;
+  flex-shrink: 0;
+}
+.peer-bar-avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: #eee;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+.peer-bar-name {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+.peer-bar-sub {
+  display: block;
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 4rpx;
+}
+
+/* 消息区 */
+.msg-scroll { flex: 1; min-height: 0; }
+.msg-list { padding: 24rpx; }
+
+.msg-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 32rpx;
+}
+.msg-row.mine { flex-direction: row; justify-content: flex-end; }
+
+.msg-avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #eee;
+}
+
+.bubble-wrap {
+  max-width: 480rpx;
+  margin: 0 16rpx;
+  display: flex;
+  flex-direction: column;
+}
+.msg-row.mine .bubble-wrap { align-items: flex-end; }
+
+.bubble {
+  padding: 20rpx 24rpx;
+  border-radius: 16rpx;
+  word-break: break-all;
+}
+.bubble-peer {
+  background: #fff;
+  border-top-left-radius: 4rpx;
+}
+.bubble-mine {
+  background: #95ec69;
+  border-top-right-radius: 4rpx;
+}
+.bubble-text {
+  font-size: 30rpx;
+  line-height: 1.5;
+  color: #1a1a1a;
+}
+
+.msg-time {
+  font-size: 20rpx;
+  color: #bbb;
+  margin-top: 8rpx;
+}
+
+/* 新消息入场动画 */
+.msg-new {
+  animation: msgIn 0.3s ease-out;
+}
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(20rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 快捷短语 */
+.quick-scroll {
+  flex-shrink: 0;
+  white-space: nowrap;
+  background: #f5f6f8;
+  padding: 0 0 16rpx;
+}
+.quick-list { display: flex; padding: 0 24rpx; }
+.quick-item {
+  flex-shrink: 0;
+  padding: 12rpx 24rpx;
+  margin-right: 16rpx;
+  background: #fff;
+  border-radius: 28rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 输入栏 */
+.input-bar {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 24rpx calc(16rpx + env(safe-area-inset-bottom));
+  background: #fff;
+  border-top: 1rpx solid #f0f0f0;
+  flex-shrink: 0;
+}
+.input {
+  flex: 1;
+  height: 76rpx;
+  background: #f5f6f8;
+  border-radius: 38rpx;
+  padding: 0 28rpx;
+  font-size: 30rpx;
+}
+.send-btn {
+  margin-left: 20rpx;
+  padding: 16rpx 36rpx;
+  border-radius: 38rpx;
+  font-size: 28rpx;
+  color: #fff;
+  background: #d9d9d9;
+  flex-shrink: 0;
+}
+.send-btn.active { background: #07c160; }

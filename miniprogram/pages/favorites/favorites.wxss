@@ -1,0 +1,7 @@
+.page { padding-bottom: 40rpx; }
+
+.list {
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx 24rpx 0;
+}

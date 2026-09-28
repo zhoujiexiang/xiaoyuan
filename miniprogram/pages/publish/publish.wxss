@@ -1,0 +1,189 @@
+.page { padding-bottom: 180rpx; }
+
+.sec-head { margin-bottom: 20rpx; }
+
+/* 图片 */
+.img-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+.img-item, .img-add {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+  position: relative;
+}
+.img-thumb { width: 100%; height: 100%; display: block; }
+
+.img-del {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 44rpx;
+  height: 44rpx;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom-left-radius: 12rpx;
+}
+.img-cover {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(7, 193, 96, 0.9);
+  color: #fff;
+  font-size: 20rpx;
+  text-align: center;
+  padding: 4rpx 0;
+}
+
+.img-add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f7f8fa;
+  border: 2rpx dashed #ddd;
+  box-sizing: border-box;
+}
+.img-add-icon { font-size: 48rpx; color: #ccc; line-height: 1; }
+.img-add-text { font-size: 22rpx; color: #bbb; margin-top: 8rpx; }
+
+.tip { font-size: 22rpx; color: #bbb; display: block; margin-top: 16rpx; }
+
+/* 表单 */
+.form-item-col {
+  flex-direction: column;
+  align-items: stretch;
+}
+.form-item-col .form-label { margin-bottom: 16rpx; }
+.form-textarea {
+  width: 100%;
+  height: 200rpx;
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+.counter {
+  align-self: flex-end;
+  font-size: 22rpx;
+  color: #ccc;
+  margin-top: 8rpx;
+}
+
+.unit { font-size: 26rpx; color: #999; margin-left: 8rpx; }
+
+.picker-val { color: #1a1a1a; }
+.picker-val.form-placeholder { color: #ccc; }
+/* 时间选择器贴着日期显示，中间留一点空 */
+.picker-val-time { margin-left: 16rpx; }
+
+/* ---------- 发布类型切换 ---------- */
+.mode-tabs {
+  display: flex;
+  margin: 20rpx 24rpx 0;
+  padding: 8rpx;
+  background: #fff;
+  border-radius: 16rpx;
+}
+.mode-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72rpx;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+.mode-tab.active {
+  background: #e8f7ee;
+  color: #06804a;
+  font-weight: 600;
+}
+.mt-icon { font-size: 30rpx; margin-right: 10rpx; }
+
+/* ---------- 跑腿类型选择 ---------- */
+.et-grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.et-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 152rpx;
+  height: 132rpx;
+  margin: 0 16rpx 16rpx 0;
+  border: 1rpx solid #eee;
+  border-radius: 12rpx;
+  background: #fafafa;
+}
+.et-chip.active {
+  border-color: #07c160;
+  background: #e8f7ee;
+}
+.et-icon { font-size: 40rpx; line-height: 1; }
+.et-name { font-size: 22rpx; color: #666; margin-top: 10rpx; }
+.et-chip.active .et-name { color: #06804a; font-weight: 600; }
+.arrow { color: #ccc; font-size: 32rpx; margin-left: 8rpx; }
+
+/* 安全提示 */
+.safe-tip {
+  display: flex;
+  align-items: center;
+  margin: 0 24rpx 20rpx;
+  padding: 20rpx 24rpx;
+  background: #f5f9ff;
+  border-radius: 12rpx;
+  font-size: 22rpx;
+  color: #6b8fb5;
+}
+.safe-icon { margin-right: 10rpx; }
+
+/* 提交 */
+.submit-wrap { padding: 20rpx 24rpx 40rpx; }
+
+/* 返回首页：发布是 tabBar 页，系统导航栏没有返回键，这里给一个页内入口 */
+.back-bar {
+  display: flex;
+  justify-content: flex-start;
+  margin: 20rpx 24rpx 0;
+}
+.back-home {
+  display: flex;
+  align-items: center;
+  height: 56rpx;
+  padding: 0 22rpx 0 16rpx;
+  background: #fff;
+  border-radius: 28rpx;
+  font-size: 26rpx;
+  color: #666;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+.back-home-hover { opacity: 0.7; }
+.bh-arrow {
+  font-size: 34rpx;
+  line-height: 1;
+  color: #07c160;
+  margin-right: 6rpx;
+}
+
+/* 未登录遮罩 */
+.login-mask {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 240rpx 60rpx;
+}
+.lm-icon { font-size: 100rpx; opacity: 0.4; margin-bottom: 32rpx; }
+.lm-text { color: #999; font-size: 28rpx; margin-bottom: 60rpx; }
+.lm-btn { width: 400rpx; }

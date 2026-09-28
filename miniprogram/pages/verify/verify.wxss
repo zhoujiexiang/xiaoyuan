@@ -1,0 +1,91 @@
+.page { padding-bottom: 80rpx; }
+
+.sec-title { font-size: 30rpx; font-weight: 600; margin-bottom: 12rpx; }
+.sec-desc {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+  line-height: 1.6;
+  margin-bottom: 20rpx;
+}
+
+.arrow { color: #ccc; font-size: 36rpx; }
+
+/* 只读字段（学校从 config 读，不给用户改） */
+.readonly { color: #999; }
+
+/* 驳回提示 */
+.reject-tip {
+  display: flex;
+  align-items: flex-start;
+  margin: 20rpx 24rpx 0;
+  padding: 24rpx;
+  background: #fff1f0;
+  border-radius: 16rpx;
+}
+.rt-icon { font-size: 40rpx; margin-right: 16rpx; }
+.rt-title { display: block; font-size: 28rpx; font-weight: 600; color: #d4380d; }
+.rt-reason { display: block; font-size: 24rpx; color: #cf5a3f; margin-top: 8rpx; line-height: 1.5; }
+
+/* 说明 */
+.notice {
+  margin: 0 24rpx;
+  padding: 24rpx;
+  background: #f5f9ff;
+  border-radius: 12rpx;
+}
+.notice-title {
+  display: block;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #4a7ba7;
+  margin-bottom: 12rpx;
+}
+.notice-item {
+  font-size: 22rpx;
+  color: #6b8fb5;
+  line-height: 1.8;
+}
+
+.submit-wrap { padding: 40rpx 24rpx; }
+
+/* 结果页 */
+.result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 140rpx 60rpx;
+}
+.result-icon {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 80rpx;
+  margin-bottom: 40rpx;
+}
+.result-icon.success {
+  background: #e8f7ee;
+  color: #07c160;
+}
+.result-icon.pending {
+  background: #fff5e6;
+}
+.result-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 20rpx;
+}
+.result-sub {
+  font-size: 26rpx;
+  color: #999;
+  text-align: center;
+  line-height: 1.8;
+}
+.result-btn {
+  width: 400rpx;
+  margin-top: 60rpx;
+}

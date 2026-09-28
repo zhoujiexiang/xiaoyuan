@@ -1,0 +1,101 @@
+/* pages/userProfile/userProfile.wxss */
+
+/* ---------- 用户信息卡 ---------- */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 56rpx 40rpx 40rpx;
+  background: #fff;
+  border-bottom-left-radius: 32rpx;
+  border-bottom-right-radius: 32rpx;
+}
+.hero-avatar {
+  width: 152rpx;
+  height: 152rpx;
+  border-radius: 50%;
+  background: #f0f0f0;
+  border: 4rpx solid #f5f6f8;
+}
+.hero-avatar-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64rpx;
+  opacity: 0.35;
+}
+.hero-name {
+  display: flex;
+  align-items: center;
+  margin-top: 24rpx;
+}
+.hero-nickname {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #1a1a1a;
+  max-width: 380rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 16rpx;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 16rpx;
+}
+.hero-meta text {
+  font-size: 24rpx;
+  color: #999;
+  margin: 6rpx 16rpx;
+}
+.hero-banned {
+  margin-top: 20rpx;
+  padding: 10rpx 24rpx;
+  font-size: 24rpx;
+  color: #fa5151;
+  background: #ffecec;
+  border-radius: 999rpx;
+}
+
+/* ---------- 操作按钮 ---------- */
+.actions {
+  padding: 24rpx 24rpx 0;
+}
+.hero-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+}
+.hero-btn-primary { background: #07c160; color: #fff; }
+.hero-btn-plain {
+  background: #fff;
+  color: #666;
+  border: 1rpx solid #e5e5e5;
+}
+
+/* ---------- 在售列表 ---------- */
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32rpx 32rpx 8rpx;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  padding: 12rpx 24rpx 40rpx;
+}
+
+.page-loading {
+  text-align: center;
+  padding: 200rpx 0;
+  color: #bbb;
+  font-size: 26rpx;
+}

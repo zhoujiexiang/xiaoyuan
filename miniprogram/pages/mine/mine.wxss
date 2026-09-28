@@ -1,0 +1,223 @@
+/* ---------- 头部 ---------- */
+.header {
+  position: relative;
+  margin: 24rpx;
+  padding: 40rpx 32rpx 32rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 6rpx 24rpx rgba(7, 193, 96, 0.16);
+}
+.header-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #07c160 0%, #04a352 100%);
+}
+.header-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  border: 4rpx solid #fff;
+  margin-right: 24rpx;
+  background: #eee;
+  flex-shrink: 0;
+}
+/* 没设置头像时的占位：微信已不再返回真实头像，新用户进来就是空的 */
+.avatar-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.28);
+}
+.ae-plus { color: #fff; font-size: 48rpx; line-height: 1; }
+
+/* 头部右侧的「编辑 ›」，提示点头像区可改资料 */
+.profile-edit {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 24rpx;
+  margin-left: 16rpx;
+  flex-shrink: 0;
+}
+.nickname {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #fff;
+  /* 昵称过长时先省略，把空间让给徽章；但不要抢占整行 */
+  max-width: 360rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 1;
+}
+.name-tag { margin-left: 16rpx; flex-shrink: 0; }
+.school {
+  display: block;
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 12rpx;
+}
+
+/* 统计 */
+.stats {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: 40rpx;
+  padding: 24rpx 0;
+  background: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+}
+.stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.stat-num {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.2;
+}
+.stat-label {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 6rpx;
+}
+.stat-line {
+  width: 1rpx;
+  height: 48rpx;
+  background: #f0f0f0;
+}
+
+/* 认证提示 */
+.verify-tip {
+  display: flex;
+  align-items: center;
+  margin: 0 24rpx 20rpx;
+  padding: 24rpx;
+  background: linear-gradient(135deg, #fff9e6 0%, #fff3d6 100%);
+  border-radius: 16rpx;
+}
+.vt-icon { font-size: 44rpx; margin-right: 20rpx; }
+.vt-title { display: block; font-size: 28rpx; font-weight: 600; color: #8a6d00; }
+.vt-sub { display: block; font-size: 22rpx; color: #b8942e; margin-top: 6rpx; }
+.vt-arrow { color: #d4b45a; font-size: 36rpx; }
+
+.sec-head { margin-bottom: 24rpx; }
+
+/* 订单类型 */
+.order-types { display: flex; }
+.order-type {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16rpx 0;
+}
+.ot-icon { font-size: 48rpx; }
+.ot-text { font-size: 24rpx; color: #666; margin-top: 12rpx; }
+
+/* 菜单 */
+.menu { padding: 0 24rpx; }
+.menu-item {
+  display: flex;
+  align-items: center;
+  height: 104rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+.menu-item:last-child { border-bottom: none; }
+.mi-icon { font-size: 36rpx; margin-right: 20rpx; }
+.mi-text { flex: 1; font-size: 30rpx; color: #1a1a1a; }
+.mi-badge {
+  min-width: 36rpx;
+  height: 36rpx;
+  padding: 0 10rpx;
+  border-radius: 18rpx;
+  background: #fa5151;
+  color: #fff;
+  font-size: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12rpx;
+  box-sizing: border-box;
+}
+.mi-arrow { color: #ccc; font-size: 36rpx; }
+.mi-hint {
+  font-size: 22rpx;
+  color: #bbb;
+  margin-right: 12rpx;
+}
+
+.footer {
+  text-align: center;
+  font-size: 22rpx;
+  color: #ccc;
+  padding: 40rpx 0 20rpx;
+}
+
+.login-mask {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 240rpx 60rpx;
+}
+.lm-icon { font-size: 100rpx; opacity: 0.4; margin-bottom: 32rpx; }
+.lm-text { color: #999; font-size: 28rpx; margin-bottom: 60rpx; }
+.lm-err {
+  max-width: 560rpx;
+  padding: 20rpx 28rpx;
+  margin: -30rpx 0 40rpx;
+  font-size: 24rpx;
+  line-height: 1.6;
+  color: #b25e00;
+  background: #fff8e6;
+  border: 1rpx solid #ffe1a8;
+  border-radius: 12rpx;
+  text-align: left;
+  word-break: break-all;
+}
+.lm-btn { width: 400rpx; }
+.lm-init {
+  margin-top: 40rpx;
+  padding: 16rpx 32rpx;
+  font-size: 26rpx;
+  color: #576b95;
+  border: 1rpx solid #dbe2ef;
+  border-radius: 999rpx;
+  background: #f7f9fc;
+}
+
+/* ---------- 退出登录 ---------- */
+.logout-wrap {
+  margin: 24rpx 24rpx 0;
+  padding: 0 28rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.logout-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color: #fa5151;
+}
+.logout-btn:active { background: #fafafa; border-radius: 12rpx; }
+.logout-tip {
+  font-size: 22rpx;
+  color: #bbb;
+  line-height: 1.5;
+  text-align: center;
+}

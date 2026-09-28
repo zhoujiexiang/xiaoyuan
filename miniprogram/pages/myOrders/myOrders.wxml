@@ -1,0 +1,87 @@
+<view class="page">
+
+  <view class="tabs">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="key"
+      class="tab {{activeTab === item.key ? 'active' : ''}}"
+      data-key="{{item.key}}"
+      bindtap="onTabTap"
+    >
+      <text>{{item.label}}</text>
+      <view wx:if="{{activeTab === item.key}}" class="tab-line"></view>
+    </view>
+  </view>
+
+  <view wx:if="{{list.length > 0}}" class="order-list">
+    <view wx:for="{{list}}" wx:key="_id" class="order">
+
+      <!-- 订单头 -->
+      <view class="order-head">
+        <text class="order-no">订单号 {{item.orderNo}}</text>
+        <text class="tag {{item.statusClass}}">{{item.statusText}}</text>
+      </view>
+
+      <!-- 商品信息 -->
+      <view
+        class="order-product"
+        data-productid="{{item.productId}}"
+        bindtap="goProduct"
+      >
+        <image class="op-img" src="{{item.productSnapshot.cover}}" mode="aspectFill" />
+        <view class="op-body">
+          <text class="op-title ellipsis-2">{{item.productSnapshot.title}}</text>
+          <view class="op-bottom">
+            <view class="row">
+              <text class="price price-symbol">¥</text>
+              <text class="price price-num">{{item.priceText}}</text>
+            </view>
+            <text class="op-time">{{item.timeText}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 对方信息 -->
+      <view class="order-peer">
+        <image class="peer-avatar" src="{{item.peer.avatarUrl}}" mode="aspectFill" />
+        <text class="peer-label">{{item.isBuyer ? '卖家' : '买家'}}</text>
+        <text class="peer-name ellipsis">{{item.peer.nickName}}</text>
+        <view class="peer-chat" catchtap="goProduct" data-productid="{{item.productId}}">
+          <text class="peer-chat-text">联系TA</text>
+        </view>
+      </view>
+
+      <!-- 留言 -->
+      <view wx:if="{{item.buyerRemark}}" class="order-remark">
+        <text class="or-label">买家留言：</text>
+        <text class="or-text">{{item.buyerRemark}}</text>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view wx:if="{{item.buttons.length > 0}}" class="order-actions">
+        <view
+          wx:for="{{item.buttons}}"
+          wx:for-item="btn"
+          wx:key="action"
+          class="oa-btn oa-{{btn.type}}"
+          data-action="{{btn.action}}"
+          data-orderid="{{item._id}}"
+          bindtap="onActionTap"
+        >{{btn.text}}</view>
+      </view>
+
+    </view>
+  </view>
+
+  <empty-state
+    wx:if="{{!loading && list.length === 0}}"
+    icon="🧾"
+    text="{{role === 'buyer' ? '还没有购买记录' : '还没有卖出记录'}}"
+    btnText="去逛逛"
+    bind:btntap="goHome"
+  />
+
+  <view wx:if="{{loading}}" class="loading-more">加载中…</view>
+  <view wx:elif="{{!hasMore && list.length > 0}}" class="loading-more">— 没有更多了 —</view>
+
+</view>

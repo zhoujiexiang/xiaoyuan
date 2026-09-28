@@ -1,0 +1,45 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/search/search",
+    "pages/publish/publish",
+    "pages/detail/detail",
+    "pages/userProfile/userProfile",
+    "pages/message/message",
+    "pages/chat/chat",
+    "pages/mine/mine",
+    "pages/login/login",
+    "pages/profile/profile",
+    "pages/verify/verify",
+    "pages/myProducts/myProducts",
+    "pages/myErrands/myErrands",
+    "pages/myOrders/myOrders",
+    "pages/favorites/favorites",
+    "pages/admin/admin",
+    "pages/adminVerify/adminVerify",
+    "pages/adminReports/adminReports",
+    "pages/adminProducts/adminProducts"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "校园二手",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f6f8"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#07c160",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "首页" },
+      { "pagePath": "pages/publish/publish", "text": "发布" },
+      { "pagePath": "pages/message/message", "text": "消息" },
+      { "pagePath": "pages/mine/mine", "text": "我的" }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

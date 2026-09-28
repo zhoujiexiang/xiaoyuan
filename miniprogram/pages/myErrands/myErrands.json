@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "我的跑腿",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "product-card": "/components/product-card/index",
+    "empty-state": "/components/empty-state/index"
+  }
+}
